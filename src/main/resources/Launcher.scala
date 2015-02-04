@@ -18,7 +18,7 @@ object Launcher extends App {
     case None => exit("Expected config file as argument")
   }
   
-  NettyServer.main(args)
+  NettyServer.main(Array())
 
 
   private def setTimeZoneToUTC() {
