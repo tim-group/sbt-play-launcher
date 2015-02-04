@@ -7,15 +7,6 @@ import Keys._
 object SbtPlayLauncher extends Plugin {
 
   lazy val playLauncher = TaskKey[Seq[File]]("playLauncher")
-  
-  object autoImport {
-    
-    
-  }
-  
-  override lazy val projectSettings = {
-    Seq()
-  }
 
   lazy val playLauncherSettings: Seq[Def.Setting[_]] = Seq(
     playLauncher <<= (sourceManaged in Compile) map {
@@ -24,17 +15,14 @@ object SbtPlayLauncher extends Plugin {
     },
     sourceGenerators in Compile <+= (playLauncher in Compile)
   )
-  
-  override lazy val globalSettings = Seq()
-  
+
   private case class PlayLauncherTask(dir: File) {
     def file = {
-      val pkgDir = dir / "com" / "timgroup" / "playlauncher"
-      pkgDir.mkdirs()
-      val outputFile = new File(pkgDir, "Launcher.java")
+      dir.mkdirs()
+      val outputFile = new File(dir, "Launcher.scala")
       
       if (!outputFile.exists) {
-        val is = getClass.getResourceAsStream("/Launcher.java")
+        val is = getClass.getResourceAsStream("/Launcher.scala")
         inputToFile(is, outputFile)
       }
       
