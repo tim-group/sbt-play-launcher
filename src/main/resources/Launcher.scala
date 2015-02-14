@@ -31,6 +31,8 @@ object Launcher extends App {
     val props = new Properties
     props.load(new FileInputStream(filename))
 
+    setNameAndVersionPropertiesFromManifest()
+
     maybeSetProperty("pidfile.path", "/dev/null")
     maybeSetProperty("http.port", props.getProperty("port", DEFAULT_PORT))
 
@@ -38,7 +40,7 @@ object Launcher extends App {
     props.stringPropertyNames.asScala.foreach(maybeSetFromConfig(_, props))
   }
 
-  private def setNameAndVersionPropertiesFromManifest {
+  private def setNameAndVersionPropertiesFromManifest() {
     maybeJarSpecificationVersion match {
       case Some(version) => maybeSetProperty("timgroup.app.version", version)
       case None => exit("Cannot find Implementation-Version in MANIFEST.MF, aborting")
